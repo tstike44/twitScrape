@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "run.js",
-  
   "dependencies": {
     "async": "^3.1.0",
     "cheerio": "^1.0.0-rc.3",
