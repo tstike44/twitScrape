@@ -92,6 +92,13 @@ var THandlers = [
 		webhook: "https://discordapp.com/api/webhooks/638843583822299136/s-X0YxXeWHuXTYG3WeXpBkbn4taigZ2kjleT6_DndaH8To5-EEBG5YV2KmE7GywJF9mS",
 		avatar_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ01Y889yvPT0vnKSTBu5quBSiOSZDo4LnEhLNYs2eljOg2_C5e&s",
 		keywords: "*",
+	},
+	{
+		name: 'Trevor',
+		url: "https://twitter.com/trevorOWni",
+		webhook: "https://discordapp.com/api/webhooks/638843583822299136/s-X0YxXeWHuXTYG3WeXpBkbn4taigZ2kjleT6_DndaH8To5-EEBG5YV2KmE7GywJF9mS",
+		avatar_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ01Y889yvPT0vnKSTBu5quBSiOSZDo4LnEhLNYs2eljOg2_C5e&s",
+		keywords: "*",
 	}
 ];
 
@@ -106,55 +113,55 @@ const sendDiscordMessage = (pl) => {
 	const { content, turl } = pl;
 	const { name, webhook, avatar_url } = THandlers.filter((d, i) => d.url === turl)[0];
 
-	request.post(webhook).form({ username: name, avatar_url: avatar_url, content: `\n${content}\n\n :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign:\n\n`, embed: embed });
+	request.post(webhook).form({ username: name, avatar_url: avatar_url, content: `\n${content}\n\n :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign:\n\n` });
+}
 
-	console.log('Twitter => Discord program is running');
+console.log('Twitter => Discord program is running');
 
-	//MONITOR
-	setInterval(() => {
-		async.map(apiurls, function (item, callback) {
-			request({ url: item, pool: separateReqPool }, function (error, response, body) {
-				try {
-					const $ = cheerio.load(body);
-					var turl = "https://twitter.com" + response.req.path;
-					if (!tweets[turl].length) {
-						//FIRST LOAD
-						for (let i = 0; i < $('div.js-tweet-text-container p').length; i++) {
-							tweets[turl].push($('div.js-tweet-text-container p').eq(i).text());
-						}
+//MONITOR
+setInterval(() => {
+	async.map(apiurls, function (item, callback) {
+		request({ url: item, pool: separateReqPool }, function (error, response, body) {
+			try {
+				const $ = cheerio.load(body);
+				var turl = "https://twitter.com" + response.req.path;
+				if (!tweets[turl].length) {
+					//FIRST LOAD
+					for (let i = 0; i < $('div.js-tweet-text-container p').length; i++) {
+						tweets[turl].push($('div.js-tweet-text-container p').eq(i).text());
 					}
-					else {
-						//EVERY OTHER TIME
-						for (let i = 0; i < $('div.js-tweet-text-container p').length; i++) {
-							const s_tweet = $('div.js-tweet-text-container p').eq(i).text();
-							//CHECK IF TWEET IS NEWS
-							if (tweets[turl].indexOf(s_tweet) === -1) {
-								tweets[turl].push(s_tweet);
-								const th_kw = THandlers.filter((d, i) => d.url === turl)[0].keywords.split(',');
-								const th_name = THandlers.filter((d, i) => d.url === turl)[0].name;
-								let nFlag = false;
-								th_kw.forEach((kw, j) => {
-									if (kw === '*') {
+				}
+				else {
+					//EVERY OTHER TIME
+					for (let i = 0; i < $('div.js-tweet-text-container p').length; i++) {
+						const s_tweet = $('div.js-tweet-text-container p').eq(i).text();
+						//CHECK IF TWEET IS NEWS
+						if (tweets[turl].indexOf(s_tweet) === -1) {
+							tweets[turl].push(s_tweet);
+							const th_kw = THandlers.filter((d, i) => d.url === turl)[0].keywords.split(',');
+							const th_name = THandlers.filter((d, i) => d.url === turl)[0].name;
+							let nFlag = false;
+							th_kw.forEach((kw, j) => {
+								if (kw === '*') {
+									nFlag = true;
+								}
+								else {
+									if (s_tweet.indexOf(kw) != -1) {
 										nFlag = true;
 									}
-									else {
-										if (s_tweet.indexOf(kw) != -1) {
-											nFlag = true;
-										}
-									}
-								});
-								if (nFlag) {
-									sendDiscordMessage({ content: s_tweet, turl: turl });
 								}
+							});
+							if (nFlag) {
+								sendDiscordMessage({ content: s_tweet, turl: turl });
 							}
 						}
 					}
-				} catch (e) {
-					console.log('Error =>' + e);
 				}
-			});
-		}, function (err, results) {
-			//console.log(results);
+			} catch (e) {
+				console.log('Error =>' + e);
+			}
 		});
-	}, 1000); //RUNS EVERY 1 SECONDS
-};
+	}, function (err, results) {
+	});
+}, 1000); //RUNS EVERY 1 SECONDS
+
