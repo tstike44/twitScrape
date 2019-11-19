@@ -92,6 +92,13 @@ var THandlers = [
 		webhook: "https://discordapp.com/api/webhooks/638843583822299136/s-X0YxXeWHuXTYG3WeXpBkbn4taigZ2kjleT6_DndaH8To5-EEBG5YV2KmE7GywJF9mS",
 		avatar_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ01Y889yvPT0vnKSTBu5quBSiOSZDo4LnEhLNYs2eljOg2_C5e&s",
 		keywords: "*",
+	},
+	{
+		name: 'Trevor',
+		url: "https://twitter.com/trevorOWni",
+		webhook: "https://discordapp.com/api/webhooks/638843583822299136/s-X0YxXeWHuXTYG3WeXpBkbn4taigZ2kjleT6_DndaH8To5-EEBG5YV2KmE7GywJF9mS",
+		avatar_url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ01Y889yvPT0vnKSTBu5quBSiOSZDo4LnEhLNYs2eljOg2_C5e&s",
+		keywords: "*",
 	}
 ];
 
