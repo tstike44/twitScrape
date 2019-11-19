@@ -5,15 +5,6 @@ const separateReqPool = { maxSockets: 15 };
 const async = require('async');
 let tweets = {}, apiurls = [], N = [];
 
-//discord utils
-const { token } = require("./botSettings.json")
-const { Discord, Client, RichEmbed } = require('discord.js')
-const client = new Client();
-
-client.on('ready', () => {
-	console.log('botReady');
-});
-
 /////  CONFIGURE TWITTER HANDLERS ////
 var THandlers = [
 	{
@@ -114,10 +105,6 @@ THandlers.forEach((th, i) => {
 const sendDiscordMessage = (pl) => {
 	const { content, turl } = pl;
 	const { name, webhook, avatar_url } = THandlers.filter((d, i) => d.url === turl)[0];
-	const embed = new Discord.RichEmbed()
-		.setColor("#33FFD8")
-		.setTitle(username)
-		.setDescription(content);
 
 	request.post(webhook).form({ username: name, avatar_url: avatar_url, content: `\n${content}\n\n :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign: :heavy_minus_sign:\n\n`, embed: embed });
 
@@ -170,5 +157,4 @@ const sendDiscordMessage = (pl) => {
 			//console.log(results);
 		});
 	}, 1000); //RUNS EVERY 1 SECONDS
-}
-client.login(token);
+};
